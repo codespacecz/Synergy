@@ -4,8 +4,8 @@
 		<title>Synergy UI</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="./demo.css">
-		<link rel="stylesheet" href="../style.css">
+		<link rel="stylesheet" href="web/demo.css">
+		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
 		<div class="content">
@@ -65,11 +65,23 @@
 					</div>
 
 					<div class="toggle-text">
-						<label for="toggle1">Check me! I'm a toggle.</label>
+						<label for="toggle1">Toggle me! I'm a toggle.</label>
 						<div class="toggle">
 							<input id="toggle1" type="checkbox">
 							<div class="indicator"></div>
 						</div>
+					</div>
+
+					<div class="radio-row">
+						<label class="radio">
+							<input type="radio" name="radio-button" value="css" checked />
+							<span>Radio 1</span>
+						</label>
+	
+						<label class="radio">
+							<input type="radio" name="radio-button" value="acs" />
+							<span>Radio 2</span>
+						</label>
 					</div>
 
 					<div class="btn-row">
@@ -86,6 +98,6 @@
 			</div>
 
 		</div>
-		<script src="./demo.js"></script>
+		<script src="web/demo.js"></script>
 	</body>
 </html>

@@ -1,0 +1,85 @@
+.inp {
+	position: relative;
+	width: 100%;
+}
+
+/* Label */
+
+.inp label {
+	position: absolute;
+	top: 11px;
+	left: 7px;
+	font-size: 1rem;
+	font-weight: 700;
+	transform-origin: 0 0;
+	transform: translate3d(0, 0, 0);
+	transition: all .2s ease;
+	pointer-events: none;
+	background: var(--synergy-bg);
+	padding: 3px 8px;
+	border-radius: 10px;
+	line-height: 1;
+	color: var(--synergy-label);
+}
+
+.inp :is(
+	:is(input, textarea, select):not(:placeholder-shown) + label,
+	:is(input, textarea):not(:-ms-input-placeholder) + label,
+	:is(input, textarea):not(:-moz-placeholder-shown) + label
+),
+.inp :is(input, textarea):focus + label {
+	color: var(--synergy-label-active);
+	transform: translate3d(0, -21px, 0) scale(.8);
+}
+
+/* Common styles */
+
+.inp :is(input, textarea, select) {
+	display: block;
+	width: 100%;
+	min-height: 47px;
+	font-family: inherit;
+	padding: 10px 12px;
+	font-size: 1rem;
+	font-weight: 500;
+	color: var(--synergy-text-color);
+	transition: border-color 0.15s ease;
+	border-radius: var(--synergy-border-radius);
+	border: var(--synergy-border-width) solid var(--synergy-border);
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+	background: var(--synergy-bg);
+	margin: 0px;
+}
+
+.inp :is(input, textarea, select):focus {
+	outline: none;
+	border-color: var(--synergy-border-active);
+}
+
+/* Specific styles */
+
+.inp.select select {
+	appearance: none;
+	padding-right: 40px;
+}
+
+.inp.select::after {
+	content: "";
+	border: 2px solid var(--synergy-text-color);
+	border-top: 0;
+	border-left: 0;
+	display: block;
+	position: absolute;
+	top: 50%;
+	margin-top: -8.7px;
+	right: 15px;
+	padding: 5px;
+	transform: rotate(45deg);
+	pointer-events: none;
+}
+
+.inp textarea {
+	height: 100px;
+	max-width: 100%;
+	resize: vertical;
+}

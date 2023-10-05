@@ -1,0 +1,61 @@
+.toggle {
+	border: var(--synergy-border-width) solid var(--synergy-border);
+	background-color: var(--synergy-bg);
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+	border-radius: 100px;
+	padding: 3px;
+	display: flex;
+	max-width: 2.6rem;
+	height: 1.5rem;
+	width: 100%;
+	position: relative;
+}
+
+.toggle input {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	z-index: 100;
+}
+
+.toggle .indicator {
+	transition: all .2s;
+	display: flex;
+	height: 100%;
+}
+
+.toggle .indicator::after {
+	transition: all .2s;
+	margin-left: auto;
+	display: inline-block;
+	height: 100%;
+	aspect-ratio: 1 / 1;
+	background-color: var(--synergy-border);
+	border-radius: 100%;
+	content: "";
+}
+
+.toggle input:checked + .indicator {
+	flex: 1;
+}
+
+.toggle input:checked + .indicator::after {
+	background-color: var(--synergy-border-active);
+}
+
+/* Toggle with label */
+
+.toggle-text {
+	display: grid;
+	align-items: center;
+	gap: 20px;
+	grid-template-columns: 1fr 2.6rem;
+}
+
+.toggle-text label {
+	cursor: pointer;
+}

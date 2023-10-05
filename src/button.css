@@ -1,0 +1,33 @@
+.btn-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+}
+
+.btn {
+	background-color: var(--synergy-btn-bg);
+	padding: 12px 20px;
+	border: 0;
+	color: var(--synergy-text-color);
+	font: inherit;
+	font-weight: 700;
+	font-size: 1rem;
+	border-radius: var(--synergy-border-radius);
+	transition: .2s background-color;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background-color: var(--synergy-btn-bg-hover);
+}
+
+.btn:active {
+	background-color: var(--synergy-btn-bg-active);
+}
+
+.btn.btn-primary {
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+	--synergy-btn-bg: var(--synergy-btn-primary-bg);
+	--synergy-btn-bg-hover: var(--synergy-btn-primary-bg-hover);
+	--synergy-btn-bg-active: var(--synergy-btn-primary-bg-active);
+}
