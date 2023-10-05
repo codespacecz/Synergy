@@ -20,6 +20,7 @@
 	height: 100%;
 	cursor: pointer;
 	z-index: 100;
+	margin: 0;
 }
 
 .toggle .indicator {
@@ -44,8 +45,13 @@
 }
 
 .toggle input:checked + .indicator::after {
-	background-color: var(--synergy-border-active);
+	background: var(--synergy-border-active);
 }
+
+.toggle input:focus-visible + .indicator::after {
+	box-shadow: 0 0 10px 0 var(--synergy-bg), 0 0 0 10px var(--synergy-focus-highlight);
+}
+
 
 /* Toggle with label */
 

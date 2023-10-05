@@ -15,6 +15,8 @@
 	border-radius: var(--synergy-border-radius);
 	transition: .2s background-color;
 	cursor: pointer;
+	outline: none;
+	transition: box-shadow .2s;
 }
 
 .btn:hover {
@@ -30,4 +32,12 @@
 	--synergy-btn-bg: var(--synergy-btn-primary-bg);
 	--synergy-btn-bg-hover: var(--synergy-btn-primary-bg-hover);
 	--synergy-btn-bg-active: var(--synergy-btn-primary-bg-active);
+}
+
+.btn:focus-visible {
+	box-shadow: 0 0 0 5px var(--synergy-btn-bg);
+}
+
+.btn.btn-primary:focus-visible {
+	box-shadow: 0 0 0 5px var(--synergy-focus-highlight);
 }

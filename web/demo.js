@@ -144,6 +144,8 @@ class Theme {
 	
 		variables.push(this.var("border", this.cArgb(this.main, .4)));
 		variables.push(this.var("border-active", this.cArgb(this.main)));
+
+		variables.push(this.var("focus-highlight", this.cArgb(this.main, .25)));
 	
 		variables.push(this.var("label", this.cArgb(this.main, .8)));
 		variables.push(this.var("label-active", this.cArgb(this.main)));
