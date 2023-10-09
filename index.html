@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<div class="content">
+		<div class="content" id="app">
 
 			<header>
 				<h1>
@@ -16,22 +16,61 @@
 				</h1>
 				<p>Simple framework with CSS-only UI components</p>
 				<div class="colorselector">
-					<input type="color" value="#865e3c" title="Main color">
-					<input type="color" value="#63452c" title="Text color">
-					<input type="color" value="#f9f7f4" title="Background color">
-					<div class="config" title="Settings">
+					<input type="color" v-model="data.preset.main" @change="applyPreset(data.preset);" title="Main color">
+					<input type="color" v-model="data.preset.text" @change="applyPreset(data.preset);" title="Text color">
+					<input type="color" v-model="data.preset.bg" @change="applyPreset(data.preset);" title="Background color">
+					<div class="config" title="Settings" @click="settings = !settings;">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M13.875 22h-3.75q-.375 0-.65-.25t-.325-.625l-.3-2.325q-.325-.125-.613-.3t-.562-.375l-2.175.9q-.35.125-.7.025t-.55-.425L2.4 15.4q-.2-.325-.125-.7t.375-.6l1.875-1.425Q4.5 12.5 4.5 12.337v-.674q0-.163.025-.338L2.65 9.9q-.3-.225-.375-.6t.125-.7l1.85-3.225q.175-.35.537-.438t.713.038l2.175.9q.275-.2.575-.375t.6-.3l.3-2.325q.05-.375.325-.625t.65-.25h3.75q.375 0 .65.25t.325.625l.3 2.325q.325.125.613.3t.562.375l2.175-.9q.35-.125.7-.025t.55.425L21.6 8.6q.2.325.125.7t-.375.6l-1.875 1.425q.025.175.025.338v.674q0 .163-.05.338l1.875 1.425q.3.225.375.6t-.125.7l-1.85 3.2q-.2.325-.563.438t-.712-.013l-2.125-.9q-.275.2-.575.375t-.6.3l-.3 2.325q-.05.375-.325.625t-.65.25Zm-1.825-6.5q1.45 0 2.475-1.025T15.55 12q0-1.45-1.025-2.475T12.05 8.5q-1.475 0-2.488 1.025T8.55 12q0 1.45 1.012 2.475T12.05 15.5Z"/></svg>
 					</div>
 				</div>
 			</header>
 
-			<aside class="settings">
+			<aside class="settings" :class="{ open: settings }">
 
-				<svg xmlns="http://www.w3.org/2000/svg" class="close" viewBox="0 0 24 24"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6L6.4 19Z"/></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" @click="settings = false;" class="close" viewBox="0 0 24 24"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6L6.4 19Z"/></svg>
 
 				<b>Presets</b>
 
-				<div class="presets"></div>
+				<div class="presets">
+					<div v-for="p in data.presets" @click="data.preset = p; applyPreset(p);">
+						<div :style="`background: ${p.main};`"></div>
+						<div :style="`background: ${p.text};`"></div>
+						<div :style="`background: ${p.bg};`"></div>
+					</div>
+				</div>
+
+				<b>Component selection</b>
+
+				<form class="form" @submit.prevent="generateCSS">
+	
+					<label class="cbox" v-for="p in data.parts">
+						<input type="checkbox" v-model="p.enabled">
+						<span>{{ p.name }}</span>
+					</label>
+	
+					<div class="btn-row">
+						<button class="btn btn-primary" type="submit">
+							Generate CSS
+						</button>
+					</div>
+	
+				</form>
+
+				<template v-if="data.results.length">
+
+					<b>CSS download</b>
+
+					<div class="btn-row">
+						<a v-for="r in data.results" class="btn btn-primary btn-download" :download="r.name" :href="'data:text/plain;charset=utf-8,' + encodeURIComponent(r.css)">
+							{{ r.name }}
+							<small>
+								{{ kbSize(r.size_gzip) }} (gzip) · {{ kbSize(r.size) }}
+							</small>
+						</a>
+					</div>
+
+				</template>
+
 
 			</aside>
 
@@ -103,6 +142,6 @@
 			</div>
 
 		</div>
-		<script src="web/demo.js"></script>
+		<script type="module" src="web/app.ts"></script>
 	</body>
 </html>

@@ -1,78 +1,94 @@
+import { reactive } from "petite-vue";
+
 var style = document.createElement("style");
 
 addEventListener("load", () => {
-
-	let cs = document.querySelectorAll(".colorselector > *");
-	cs.forEach(c => c.addEventListener("change", updateColors));
-	document.querySelector("head").appendChild(style);
-	updateColors();
-	showPresets();
-	const p = presets[Math.floor(Math.random() * presets.length)];
-	applyPreset(p);
-
-	document.querySelector(".colorselector .config").addEventListener("click", toggleSettings);
-	document.querySelector(".settings .close").addEventListener("click", toggleSettings);
+	
+	document.querySelector("head")!.appendChild(style);
 
 });
 
-function updateColors() {
-	let cs = document.querySelectorAll(".colorselector > *");
-	let p = {main: cs[0].value, text: cs[1].value, bg: cs[2].value};
-	console.log(p);
-	let t = new Theme(p);
-	t.apply();
-}
+export namespace Exporter {
 
-function toggleSettings() {
-	document.querySelector(".settings").classList.toggle("open");
-}
+	export let parts = reactive([
+		{name: "Buttons", file: "button", enabled: true},
+		{name: "Fields", file: "input", enabled: true},
+		{name: "Toggles", file: "toggle", enabled: true},
+		{name: "Checkboxes and radios", file: "checkbox", enabled: true},
+	]);
 
-let presets = [
-	{main: "#2ebdf5", text: "#ffffff", bg: "#040813"},
-	{main: "#f5b62e", text: "#ffffff", bg: "#040813"},
-	{main: "#FF6565", text: "#ffffff", bg: "#0f0413"},
-	{main: "#9b8fe4", text: "#cfcef4", bg: "#090818", siteBg: "#100E22"},
-	{main: "#337e2c", text: "#031601", bg: "#f3f7f2"},
-	{main: "#1c71d8", text: "#030e1c", bg: "#ffffff"},
-	{main: "#9141ac", text: "#613583", bg: "#f6edf7"},
-	{main: "#a51d2d", text: "#3d3846", bg: "#f1e9e8"},
-	{main: "#865e3c", text: "#63452c", bg: "#f9f7f4", siteBg: "#ffffff"}
-];
+	interface Result {
+		name: string,
+		css: string,
+		size: number,
+		size_gzip: number
+	}
 
-function showPresets() {
-	let presetsEl = document.querySelector(".presets");
-	presets.forEach(p => {
-		let el = document.createElement("div");
-		el.innerHTML = `
-		<div style="background-color: ${p.main};"></div>
-		<div style="background-color: ${p.text};"></div>
-		<div style="background-color: ${p.bg};"></div>`;
-		el.addEventListener("click", () => {
-			applyPreset(p);
+	export async function get(theme: Theme) {
+
+		let cssParts = [theme.generate()];
+		for(let p of parts) {
+			if(p.enabled) {
+				let value = await (await fetch(`./${p.file}.css`)).text();
+				value = `/* ${p.name} */\n\n${value}`;
+				cssParts.push(value);
+			}
+		}
+		let css = cssParts.join("\n\n/* ------------------- */\n\n");
+
+		let results: Result[] = [];
+		await addResult(results, "synergy.min.css", minify(css));
+		await addResult(results, "synergy.css", css);
+
+		return results;
+
+	}
+
+	async function addResult(results: Result[], name: string, css: string) {
+		results.push({
+			name,
+			css,
+			size: getSize(css),
+			size_gzip: await getCompressedSize(css)
 		});
-		presetsEl.appendChild(el);
-	});
+	}
+
+	async function getCompressedSize(content: string) {
+		let ds = new CompressionStream("gzip");
+		let blob = new Blob([content]);
+		let compressedStream = blob.stream().pipeThrough(ds);
+		return (await new Response(compressedStream).blob()).size;
+	}  
+
+	function getSize(content: string) {
+		return (new TextEncoder().encode(content)).length
+	}
+
+	function minify(value: string) {
+		return value
+		  .replace(/([^0-9a-zA-Z\.#])\s+/g, "$1")
+		  .replace(/\s([^0-9a-zA-Z\.#]+)/g, "$1")
+		  .replace(/;}/g, "}")
+		  .replace(/\/\*.*?\*\//g, "");
+	}
+
 }
 
-function applyPreset(p) {
-	let cs = document.querySelectorAll(".colorselector > *");
-	cs[0].value = p.main;
-	cs[1].value = p.text;
-	cs[2].value = p.bg;
-	updateColors();
-	let html = document.querySelector("html");
-	html.style = "";
-	if(p.siteBg) html.style.background = p.siteBg;
+export interface Preset {
+	main: string,
+	text: string,
+	bg: string,
+	siteBg?: string
 }
 
-class Color {
+export class Color {
 
-	r;
-	g;
-	b;
-	a;
+	r: number;
+	g: number;
+	b: number;
+	a: number;
 
-	constructor(r, g, b, a = 1) {
+	constructor(r: number, g: number, b: number, a: number = 1) {
 		this.r = r;
 		this.g = g;
 		this.b = b;
@@ -83,11 +99,12 @@ class Color {
 		return new Color(this.r, this.g, this.b, this.a);
 	}
 
-	static fromHex(hex) {
-		return new Color(...this.hexToRgb(hex));
+	static fromHex(hex: string) {
+		let [r, g, b] = this.hexToRgb(hex);
+		return new Color(r, g, b);
 	}
 
-	static hexToRgb(hex) {
+	static hexToRgb(hex: string) {
 		hex = hex.replace(/^#/, '');
 		const r = parseInt(hex.slice(0, 2), 16) / 255;
 		const g = parseInt(hex.slice(2, 4), 16) / 255;
@@ -99,8 +116,8 @@ class Color {
 		return `rgba(${this.r*255}, ${this.g*255}, ${this.b*255}, ${this.a})`;
 	}
 
-	contrast(otherColor) {
-		const getRelativeLuminance = (rgb) => {
+	contrast(otherColor: Color) {
+		const getRelativeLuminance = (rgb: number) => {
 		  const sRGB = rgb / 255;
 		  return sRGB <= 0.03928 ? sRGB / 12.92 : Math.pow((sRGB + 0.055) / 1.055, 2.4);
 		};
@@ -114,19 +131,19 @@ class Color {
 		return (contrastRatio*100)-100;
 	}
 
-	equals(otherColor) {
+	equals(otherColor: Color) {
 		return this.r == otherColor.r && this.g == otherColor.g && this.b == otherColor.b && this.a == otherColor.a;
 	}
 
 }
 
-class Theme {
+export class Theme {
 
-	main;
-	text;
-	bg;
+	main: Color;
+	text: Color;
+	bg: Color;
 
-	constructor(opt) {
+	constructor(opt: Preset) {
 
 		this.main = Color.fromHex(opt.main);
 		this.text = Color.fromHex(opt.text);
@@ -165,16 +182,16 @@ class Theme {
 		if(this.main.contrast(this.bg) < .3) alert("Contrast between main color and the background is low!");
 		if(this.bg.contrast(this.text) < .3) alert("Contrast between text color and the background is low!");
 	
-		let styles = [`:root {${variables.join("")}}`];
+		let styles = [`:root {\n${variables.join("\n")}\n}`];
 	
 		let btnColor = this.getBtnColor(this.main, this.text);
-		if(btnColor != this.text) styles.push(`.btn.btn-primary {${this.var("text-color", btnColor.rgbFormat())}}`);
+		if(btnColor != this.text) styles.push(`.btn.btn-primary {\n${this.var("text-color", btnColor.rgbFormat())}\n}`);
 
-		return styles.join("\n");
+		return styles.join("\n\n");
 
 	}
 
-	getBtnColor(main, text) {
+	getBtnColor(main: Color, text: Color) {
 		let white = new Color(1, 1, 1);
 		let black = new Color(0, 0, 0);
 		let cText = main.contrast(text);
@@ -182,14 +199,14 @@ class Theme {
 		return cWhite > .3 ? white : cText > .3 ? text : black;
 	}
 
-	cArgb(color, alpha = 1) {
+	cArgb(color: Color, alpha: number = 1) {
 		let c = color.clone();
 		c.a = alpha;
 		return c.rgbFormat();
 	}
 
-	var(name, value) {
-		return `--synergy-${name}: ${value};`;
+	var(name: string, value: string) {
+		return `\t--synergy-${name}: ${value};`;
 	}
 
 }

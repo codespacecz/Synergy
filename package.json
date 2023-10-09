@@ -1,0 +1,21 @@
+{
+	"name": "synergy",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"keywords": [],
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"petite-vue": "^0.4.1"
+	},
+	"devDependencies": {
+		"typescript": "^5.0.2",
+		"vite": "^4.4.5"
+	}
+}

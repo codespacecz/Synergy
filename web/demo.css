@@ -9,7 +9,8 @@ html, body {color: var(--synergy-text-color); font-family: Cantarell, ui-sans-se
 @media screen and (max-width: 700px) {
 	.grid {grid-template-columns: 1fr; max-width: 500px;}
 }
-.form {display: flex; flex-direction: column; gap: 20px;}
+.form {display: flex; flex-direction: column; gap: 15px;}
+.form > * {margin: 0;}
 
 header {margin-bottom: 70px; text-align: center;}
 header > * {margin: 30px 0;}
@@ -22,11 +23,15 @@ header h1 .color {background-clip: text; -webkit-background-clip: text; backgrou
 .colorselector div {display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px #0004, inset 0 0 0 2px var(--synergy-border);}
 .colorselector svg {width: 30px;}
 
-.settings {position: fixed; right: -600px; top: 0; width: 90%; max-width: 400px; height: 100%; box-shadow: 0 0 0 5px var(--synergy-border-active); border-radius: 40px 0 0 40px; padding: 40px; transition: all .3s; display: flex; flex-direction: column; gap: 15px; z-index: 100; background-color: var(--synergy-bg);}
+.settings {position: fixed; right: -600px; top: 0; width: 90%; max-width: 400px; height: 100%; box-shadow: 0 0 0 5px var(--synergy-border-active); border-radius: 40px 0 0 40px; padding: 40px; transition: all .3s; display: flex; flex-direction: column; gap: 20px; z-index: 100; background-color: var(--synergy-bg); overflow-y: auto;}
 .settings.open {right: 0;}
+
+.settings b {margin-top: 20px;}
 
 .presets {display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;}
 .presets > * {height: 50px; border-radius: var(--synergy-border-radius); box-shadow: 0 1px 3px #0004; display: flex; overflow: hidden; cursor: pointer;}
 .presets > * > * {flex: 1;}
 
 .settings .close {width: 64px; height: 64px; cursor: pointer; padding: 20px; position: absolute; right: 0; top: 0; z-index: 10;}
+
+.btn.btn-download small {font-weight: 400; font-size: 12px; display: block;}
