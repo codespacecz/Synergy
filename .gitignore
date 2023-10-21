@@ -2,3 +2,4 @@ node_modules
 dist
 .vercel
 pnpm-lock.yaml
+bun.lockb

@@ -113,7 +113,13 @@ export class Color {
 	}
 
 	rgbFormat() {
-		return `rgba(${this.r*255}, ${this.g*255}, ${this.b*255}, ${this.a})`;
+		let rgb = `${this.r*255}, ${this.g*255}, ${this.b*255}`;
+		return this.a == 1 ? `rgb(${rgb})` : `rgba(${rgb}, ${this.a})`;
+	}
+
+	hexFormat() {
+		let hex = `#${(1 << 24 | (this.r*255) << 16 | (this.g*255) << 8 | (this.b*255)).toString(16).slice(1)}`;
+		return this.a != 1 ? `${hex}${(Math.floor(this.a * 255).toString(16).padStart(2, '0'))}` : hex;
 	}
 
 	contrast(otherColor: Color) {
@@ -132,7 +138,14 @@ export class Color {
 	}
 
 	equals(otherColor: Color) {
-		return this.r == otherColor.r && this.g == otherColor.g && this.b == otherColor.b && this.a == otherColor.a;
+		return this.r == otherColor.r && this.g == otherColor.g && this.b == otherColor.b;
+	}
+
+	mix(color: Color, ratio: number): Color {
+		const r = Math.round(this.r*255 * (1 - ratio) + color.r*255 * ratio);
+		const g = Math.round(this.g*255 * (1 - ratio) + color.g*255 * ratio);
+		const b = Math.round(this.b*255 * (1 - ratio) + color.b*255 * ratio);
+		return new Color(r/255, g/255, b/255);
 	}
 
 }
@@ -159,25 +172,25 @@ export class Theme {
 
 		let variables = [];
 	
-		variables.push(this.var("border", this.cArgb(this.main, .4)));
-		variables.push(this.var("border-active", this.cArgb(this.main)));
+		variables.push(this.var("border", this.cAlpha(this.main, .4)));
+		variables.push(this.var("border-active", this.cAlpha(this.main)));
 
-		variables.push(this.var("focus-highlight", this.cArgb(this.main, .25)));
+		variables.push(this.var("focus-highlight", this.cMix(this.main, this.bg, .25)));
 	
-		variables.push(this.var("label", this.cArgb(this.main, .8)));
-		variables.push(this.var("label-active", this.cArgb(this.main)));
+		variables.push(this.var("label", this.cMix(this.main, this.bg, .8)));
+		variables.push(this.var("label-active", this.cMix(this.main, this.bg)));
 	
-		variables.push(this.var("btn-primary-bg", this.cArgb(this.main, .8)));
-		variables.push(this.var("btn-primary-bg-active", this.cArgb(this.main, .5)));
-		variables.push(this.var("btn-primary-bg-hover", this.cArgb(this.main)));
+		variables.push(this.var("btn-primary-bg", this.cMix(this.main, this.bg, .8)));
+		variables.push(this.var("btn-primary-bg-active", this.cMix(this.main, this.bg, .5)));
+		variables.push(this.var("btn-primary-bg-hover", this.cMix(this.main, this.bg)));
 	
-		let btnBg = new Color(.6, .6, .6);
-		variables.push(this.var("btn-bg", this.cArgb(btnBg, .3)));
-		variables.push(this.var("btn-bg-active", this.cArgb(btnBg, .6)));
-		variables.push(this.var("btn-bg-hover", this.cArgb(btnBg, .4)));
+		let btnBg = this.bg.mix(new Color(.6, .6, .6), .8).mix(this.main, .1);
+		variables.push(this.var("btn-bg", this.cMix(btnBg, this.bg, .3)));
+		variables.push(this.var("btn-bg-active", this.cMix(btnBg, this.bg, .6)));
+		variables.push(this.var("btn-bg-hover", this.cMix(btnBg, this.bg, .4)));
 	
-		variables.push(this.var("text-color", this.text.rgbFormat()));
-		variables.push(this.var("bg", this.bg.rgbFormat()));
+		variables.push(this.var("text-color", this.text.hexFormat()));
+		variables.push(this.var("bg", this.bg.hexFormat()));
 	
 		if(this.main.contrast(this.bg) < .3) alert("Contrast between main color and the background is low!");
 		if(this.bg.contrast(this.text) < .3) alert("Contrast between text color and the background is low!");
@@ -185,7 +198,7 @@ export class Theme {
 		let styles = [`:root {\n${variables.join("\n")}\n}`];
 	
 		let btnColor = this.getBtnColor(this.main, this.text);
-		if(btnColor != this.text) styles.push(`.btn.btn-primary {\n${this.var("text-color", btnColor.rgbFormat())}\n}`);
+		if(btnColor != this.text) styles.push(`.btn.btn-primary {\n${this.var("text-color", btnColor.hexFormat())}\n}`);
 
 		return styles.join("\n\n");
 
@@ -199,10 +212,15 @@ export class Theme {
 		return cWhite > .3 ? white : cText > .3 ? text : black;
 	}
 
-	cArgb(color: Color, alpha: number = 1) {
+	cMix(color: Color, color2: Color, ratio: number = 1) {
+		let c = color2.mix(color, ratio);
+		return c.hexFormat();
+	}
+
+	cAlpha(color: Color, alpha: number = 1) {
 		let c = color.clone();
 		c.a = alpha;
-		return c.rgbFormat();
+		return c.hexFormat();
 	}
 
 	var(name: string, value: string) {
