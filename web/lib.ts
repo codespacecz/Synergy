@@ -15,6 +15,7 @@ export namespace Exporter {
 		{name: "Fields", file: "input", enabled: true},
 		{name: "Toggles", file: "toggle", enabled: true},
 		{name: "Checkboxes and radios", file: "checkbox", enabled: true},
+		{name: "Tabs", file: "tabs", enabled: true},
 	]);
 
 	interface Result {
@@ -175,7 +176,8 @@ export class Theme {
 		variables.push(this.var("border", this.cAlpha(this.main, .4)));
 		variables.push(this.var("border-active", this.cAlpha(this.main)));
 
-		variables.push(this.var("focus-highlight", this.cMix(this.main, this.bg, .25)));
+		variables.push(this.var("focus-highlight", this.cAlpha(this.main, .25)));
+		variables.push(this.var("tab-highlight", this.cAlpha(this.main, .1)));
 	
 		variables.push(this.var("label", this.cMix(this.main, this.bg, .8)));
 		variables.push(this.var("label-active", this.cMix(this.main, this.bg)));
