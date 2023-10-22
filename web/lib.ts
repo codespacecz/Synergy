@@ -175,6 +175,9 @@ export class Theme {
 	
 		variables.push(this.var("border", this.cAlpha(this.main, .4)));
 		variables.push(this.var("border-active", this.cAlpha(this.main)));
+		
+		variables.push(this.var("border-width", "2px"));
+		variables.push(this.var("border-radius", ".375rem"))
 
 		variables.push(this.var("focus-highlight", this.cAlpha(this.main, .25)));
 		variables.push(this.var("tab-highlight", this.cAlpha(this.main, .1)));

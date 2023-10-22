@@ -1,27 +1,22 @@
 :root {
-
-	--synergy-bg: rgba(249, 247, 244, 1);
-
-	--synergy-border: rgba(134, 94, 60, 0.4);
-	--synergy-border-active: rgba(134, 94, 60, 1);
+	--synergy-border: #865e3c66;
+	--synergy-border-active: #865e3c;
 	--synergy-border-width: 2px;
-	--synergy-border-radius: 0.375rem;
-
-	--synergy-focus-highlight: rgba(134, 94, 60, 0.25);
-
-	--synergy-label: rgba(134, 94, 60, 0.8);
-	--synergy-label-active: rgba(134, 94, 60, 1);
-
-	--synergy-text-color: rgba(99, 69, 44, 1);
-
-	--synergy-btn-primary-bg: rgba(134, 94, 60, 0.8);
-	--synergy-btn-primary-bg-hover: rgba(134, 94, 60, 1);
-	--synergy-btn-primary-bg-active: rgba(134, 94, 60, 0.5);
-
-	--synergy-btn-bg: rgba(153, 153, 153, 0.3);
-	--synergy-btn-bg-hover: rgba(153, 153, 153, 0.4);
-	--synergy-btn-bg-active: rgba(153, 153, 153, 0.6);
-
+	--synergy-border-radius: .375rem;
+	--synergy-focus-highlight: #865e3c3f;
+	--synergy-tab-highlight: #865e3c19;
+	--synergy-label: #9d7d61;
+	--synergy-label-active: #865e3c;
+	--synergy-btn-primary-bg: #9d7d61;
+	--synergy-btn-primary-bg-active: #c0ab98;
+	--synergy-btn-primary-bg-hover: #865e3c;
+	--synergy-btn-bg: #e1dedb;
+	--synergy-btn-bg-active: #c8c5c2;
+	--synergy-btn-bg-hover: #d9d6d2;
+	--synergy-text-color: #63452c;
+	--synergy-bg: #f9f7f4;
 }
 
-.btn.btn-primary {--synergy-text-color: rgba(255, 255, 255, 1);}
+.btn.btn-primary {
+	--synergy-text-color: #ffffff;
+}
