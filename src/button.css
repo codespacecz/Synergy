@@ -6,7 +6,7 @@
 
 .btn {
 	background-color: var(--synergy-btn-bg);
-	padding: 12px 20px;
+	padding: 9px 16px;
 	border: 0;
 	color: var(--synergy-text-color);
 	font: inherit;
@@ -18,6 +18,10 @@
 	outline: none;
 	transition: box-shadow .2s;
 	text-decoration: none;
+}
+
+.btn.btn-large {
+	padding: 12px 20px;
 }
 
 .btn:hover {

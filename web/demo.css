@@ -34,4 +34,4 @@ header h1 .color {background-clip: text; -webkit-background-clip: text; backgrou
 
 .settings .close {width: 64px; height: 64px; cursor: pointer; padding: 20px; position: absolute; right: 0; top: 0; z-index: 10;}
 
-.btn.btn-download small {font-weight: 400; font-size: 12px; display: block;}
+.btn.btn-download small {font-weight: 400; font-size: 11px; display: block;}

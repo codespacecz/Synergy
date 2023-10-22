@@ -36,7 +36,7 @@ applyPreset(pr);
 createApp({
 	applyPreset(p: Preset) {
 		data.results = [];
-		applyPreset(p);
+		data.theme = applyPreset(p);
 	},
 	async generateCSS() {
 		data.results = await Exporter.get(data.theme);

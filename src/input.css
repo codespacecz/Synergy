@@ -7,7 +7,7 @@
 
 .inp label {
 	position: absolute;
-	top: 11px;
+	top: 9px;
 	left: 7px;
 	font-size: 1rem;
 	font-weight: 700;
@@ -18,7 +18,7 @@
 	background: var(--synergy-bg);
 	padding: 3px 8px;
 	border-radius: 10px;
-	line-height: 1;
+	line-height: 1.2rem;
 	color: var(--synergy-label);
 }
 
@@ -29,7 +29,8 @@
 ),
 .inp :is(input, textarea):focus + label {
 	color: var(--synergy-label-active);
-	transform: translate3d(0, -21px, 0) scale(.8);
+	transform: scale(.8);
+	top: -.6rem;
 }
 
 /* Common styles */
@@ -37,7 +38,6 @@
 .inp :is(input, textarea, select) {
 	display: block;
 	width: 100%;
-	min-height: 47px;
 	font-family: inherit;
 	padding: 10px 12px;
 	font-size: 1rem;
