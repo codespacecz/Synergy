@@ -29,7 +29,7 @@ label.cbox > input + *::before {
 	height: 1rem;
 	border-radius: 50%;
 	aspect-ratio: 1 / 1;
-	border: 2px solid var(--synergy-border);
+	border: var(--synergy-border-width) solid var(--synergy-border);
 	transition: background .1s, box-shadow .2s;
 	background: var(--synergy-bg);
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);

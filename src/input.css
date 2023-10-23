@@ -7,8 +7,8 @@
 
 .inp label {
 	position: absolute;
-	top: 9px;
-	left: 7px;
+	top: 7px;
+	left: 5px;
 	font-size: 1rem;
 	font-weight: 700;
 	transform-origin: 0 0;
@@ -20,6 +20,7 @@
 	border-radius: 10px;
 	line-height: 1.2rem;
 	color: var(--synergy-label);
+	margin: var(--synergy-border-width);
 }
 
 .inp :is(
@@ -30,7 +31,7 @@
 .inp :is(input, textarea):focus + label {
 	color: var(--synergy-label-active);
 	transform: scale(.8);
-	top: -.6rem;
+	top: -.7rem;
 }
 
 /* Common styles */

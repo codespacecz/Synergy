@@ -6,12 +6,13 @@
 
 .btn {
 	background-color: var(--synergy-btn-bg);
-	padding: 9px 16px;
+	padding: 9px .8rem;
 	border: 0;
 	color: var(--synergy-text-color);
 	font: inherit;
 	font-weight: 700;
 	font-size: 1rem;
+	line-height: 1.25;
 	border-radius: var(--synergy-border-radius);
 	transition: .2s background-color;
 	cursor: pointer;
@@ -40,7 +41,7 @@
 }
 
 .btn:focus-visible {
-	box-shadow: 0 0 0 5px var(--synergy-btn-bg);
+	box-shadow: 0 0 0 5px var(--synergy-focus-highlight);
 }
 
 .btn.btn-primary:focus-visible {
